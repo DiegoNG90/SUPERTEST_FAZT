@@ -13,6 +13,7 @@ app.get('/tasks', (req, res) => {
 
 app.post('/task', (req, res) => {
   const { title, description } = req.body;
+
   if (!title || !description) {
     return res.sendStatus(400);
   }

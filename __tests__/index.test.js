@@ -38,8 +38,16 @@ describe('POST /task', () => {
 
   describe('When title and description are missing', () => {
     test('Should respond with a 400 status code', async () => {
-      const RESPONSE = await request(app).post('/task').send({});
-      expect(RESPONSE.statusCode).toBe(400);
+      const fields = [
+        {},
+        { title: 'Test Task' },
+        { description: 'Test description' },
+      ];
+
+      for (const body of fields) {
+        const RESPONSE = await request(app).post('/task').send(body);
+        expect(RESPONSE.statusCode).toBe(400);
+      }
     });
   });
 });
