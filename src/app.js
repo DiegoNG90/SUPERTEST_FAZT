@@ -5,4 +5,8 @@ app.get('/ping', (req, res) => {
   res.send('Pong');
 });
 
-app.listen(3000, () => console.log('Server listening on port 3000'));
+app.get('/tasks', (req, res) => {
+  res.json({ tasks: [] });
+});
+
+export default app;
