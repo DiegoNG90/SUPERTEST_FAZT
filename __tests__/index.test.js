@@ -17,24 +17,29 @@ describe('GET /tasks', () => {
 });
 
 describe('POST /task', () => {
-  // Should respond with a 200 status code
-  test('Should respond with a 200 status code', async () => {
-    const RESPONSE = await request(app).post('/task').send();
-    expect(RESPONSE.status).toBe(200);
-  });
-  // Should respond with a content-type of application/json
-  test('Should respond with a content-type of application/json', async () => {
-    const RESPONSE = await request(app).post('/task').send();
-    expect(RESPONSE.header['content-type']).toEqual(
-      expect.stringContaining('json')
-    );
+  describe('When title and description are passed', () => {
+    const newTask = { title: 'Tarea 1', description: 'test description' };
+    test('Should respond with a 200 status code', async () => {
+      const RESPONSE = await request(app).post('/task').send(newTask);
+      expect(RESPONSE.status).toBe(200);
+    });
+    test('Should respond with a content-type of application/json', async () => {
+      const RESPONSE = await request(app).post('/task').send(newTask);
+      expect(RESPONSE.header['content-type']).toEqual(
+        expect.stringContaining('json')
+      );
+    });
+
+    test('Should repond wuth a json object containing the new task with an id', async () => {
+      const RESPONSE = await request(app).post('/task').send(newTask);
+      expect(RESPONSE.body.id).toBeDefined();
+    });
   });
 
-  // Should repond wuth a json object containing the new task with an id
-  test('Should repond wuth a json object containing the new task with an id', async () => {
-    const RESPONSE = await request(app)
-      .post('/task')
-      .send({ title: 'Tarea 1', description: 'test description' });
-    expect(RESPONSE.body.id).toBeDefined();
+  describe('When title and description are missing', () => {
+    test('Should respond with a 400 status code', async () => {
+      const RESPONSE = await request(app).post('/task').send({});
+      expect(RESPONSE.statusCode).toBe(400);
+    });
   });
 });

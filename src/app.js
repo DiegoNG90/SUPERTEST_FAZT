@@ -13,7 +13,11 @@ app.get('/tasks', (req, res) => {
 
 app.post('/task', (req, res) => {
   const { title, description } = req.body;
-  res.json({ id: Date.now(), title, description });
+  if (!title || !description) {
+    return res.sendStatus(400);
+  }
+
+  return res.json({ id: Date.now(), title, description });
 });
 
 export default app;
